@@ -1,13 +1,8 @@
+//DEMO Auth JS with JWT
+
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
-
-//Test Case 1
-const userCredentials = {
-  username: "admin",
-  password: "admin123",
-  email: "admin@gmail.com",
-};
 
 router.post("/login", (req, res) => {
   const { username, password } = req.body;

@@ -4,7 +4,8 @@
   "description": "API for Portals, Official Auth System for Quadropic",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "devMigrate": "dotenv -e .env.test.local prisma migrate dev"
   },
   "repository": {
     "type": "git",
@@ -16,6 +17,7 @@
   },
   "homepage": "https://github.com/QuadropicHQ/portalsapi.quadropic.com#readme",
   "dependencies": {
+    "@prisma/client": "^5.18.0",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
@@ -23,6 +25,11 @@
     "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
-    "nodemon": "^3.1.4"
+    "@types/node": "^22.2.0",
+    "dotenv-cli": "^7.4.2",
+    "nodemon": "^3.1.4",
+    "prisma": "^5.18.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
   }
 }
