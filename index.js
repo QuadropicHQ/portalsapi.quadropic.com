@@ -1,6 +1,11 @@
+const dotenv = require("dotenv");
 const express = require("express");
 const app = express();
 
+//FIXME: For Dev environment is setup but PROD env sould be configured
+dotenv.config({ path: ".env.test.local" });
+
+app.use(express.json());
 app.set("view engine", "ejs");
 
 app.get("/", (req, res) => {
@@ -14,5 +19,9 @@ app.get("/", (req, res) => {
     ipadress: ip,
   });
 });
+
+const authRoutes = require("./routes/auth");
+
+app.use("/auth", authRoutes);
 
 app.listen(8080);
