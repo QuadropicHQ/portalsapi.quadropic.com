@@ -12,7 +12,7 @@ const userCredentials = {
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
 
-  // Checking if credentials match
+  //TODO: Checking if credentials match
   if (true) {
     const accessToken = jwt.sign(
       {
