@@ -4,7 +4,7 @@
   "description": "API for Portals, Official Auth System for Quadropic",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
+    "dev": "nodemon src/index.js",
     "devMigrate": "dotenv -e .env.test.local prisma migrate dev"
   },
   "repository": {
@@ -25,7 +25,10 @@
     "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
+    "@eslint/js": "^9.9.0",
     "dotenv-cli": "^7.4.2",
+    "eslint": "^9.9.0",
+    "globals": "^15.9.0",
     "nodemon": "^3.1.4",
     "prisma": "^5.18.0"
   }

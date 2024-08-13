@@ -11,8 +11,8 @@ router.post("/login", (req, res) => {
   if (true) {
     const accessToken = jwt.sign(
       {
-        username: userCredentials.username,
-        email: userCredentials.email,
+        username: username,
+        email: "hello@quadropic.com",
       },
       process.env.ACCESS_TOKEN_SECRET,
       {
@@ -21,10 +21,10 @@ router.post("/login", (req, res) => {
     );
     const refreshToken = jwt.sign(
       {
-        username: userCredentials.username,
+        username: username,
       },
       process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: "1d" }
+      { expiresIn: "1y" }
     );
 
     // Assigning refresh token in http-only cookie
