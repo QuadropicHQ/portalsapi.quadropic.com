@@ -1,4 +1,4 @@
-import { verifyJWT, signJWT } from "../../utils/jwt/root";
+const { verifyJWT, signJWT } = require("../../utils/jwt/root");
 
 function deserializeUser(req, res, next) {
   const { accessToken, refreshToken } = req.cookies;
@@ -28,7 +28,7 @@ function deserializeUser(req, res, next) {
   const newAccessToken = signJWT(session, "5m");
 
   res.cookie("accessToken", newAccessToken, {
-    maxAge: 5 * 50 * 1000, // 5 minutes
+    maxAge: 5 * 60 * 1000, // 5 minutes
     httpOnly: true,
   });
 
@@ -37,4 +37,4 @@ function deserializeUser(req, res, next) {
   return next();
 }
 
-export default deserializeUser;
+module.exports = deserializeUser;

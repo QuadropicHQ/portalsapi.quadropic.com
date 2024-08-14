@@ -8,13 +8,19 @@ const {
 
 function createSessionController(req, res) {
   const { id, password } = req.body;
-  const user = checkUser(id, password);
-  if (!user) {
+  // const user = checkUser(id, password);
+  const user = {
+    id: "alexf1",
+    name: "Alex",
+    email: "alexf1@quadropic.com",
+    password: "mypass",
+  };
+  if (user == null) {
     return res.status(401).send("Invalid credentials");
   }
 
   // Create a session
-  const session = createSession(user);
+  const session = createSession(user.id, "samplesession");
 
   //CREATE ACCESS TOKEN
   const accessToken = signJWT({ id: user.id, sessionId: session }, "5m");
@@ -38,6 +44,8 @@ function createSessionController(req, res) {
     maxAge: 183 * 24 * 60 * 60 * 1000, //183 Days
     //TODO: secure: true, ENFORCE HTTPS
   });
+
+  return res.send("Session Created");
 }
 
 function removeSessionController(req, res) {

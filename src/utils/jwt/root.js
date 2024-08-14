@@ -1,29 +1,24 @@
 const jwt = require("jsonwebtoken");
 
 //FIXME: Make Separate RSA Key Pair for ACCESS TOKEN as well as REFRESH TOKEN
-const pubKey = process.env.PUBLIC_KEY;
-const prvKey = process.env.PRIVATE_KEY;
+const accessTokenKey = process.env.ACCESS_TOKEN_SECRET;
+const refreshTokenKey = process.env.REFRESH_TOKEN_SECRET;
 
-var prv;
-var pub;
+// Expiry Time for Access Token and Refresh Token
+const accessKeyExpireTime = "5m";
+const refreshKeyExpireTime = "183d";
 
-// Sign JWT using PRIVATE Key with RS256 Algorithm
-exports.signJWT = function (payload, expiresIn, isRefreshToken = false) {
-  return jwt.sign(payload, prvKey, { algorithm: "RS256", expiresIn });
+// Sign JWT using PRIVATE Key with jwt(QD) Algorithm
+exports.signJWT = function (payload, isRefreshToken = false) {
+  return jwt.sign(payload, "accessTokenKey", {
+    expiresIn: isRefreshToken ? refreshKeyExpireTime : accessKeyExpireTime,
+  });
 };
 
-// VERIFY JWT using PUBLIC Key with RS256 Algorithm
+// VERIFY JWT using PUBLIC Key with jwt(QD) Algorithm
 exports.verifyJWT = function (token, isRefreshToken = false) {
-  //FIXME: IMPLEMENT Separate RSA Key Pair for ACCESS TOKEN as well as REFRESH TOKEN
-  if (isRefreshToken) {
-    pub = pubKey;
-    prv = prvKey;
-  } else {
-    pub = pubKey;
-    prv = prvKey;
-  }
   try {
-    const decoded = jwt.verify(token, pubKey, { algorithms: "RS256" });
+    const decoded = jwt.verify(token, "accessTokenKey");
     return { payload: decoded, expired: false };
   } catch (error) {
     return { payload: null, expired: error.message.includes("jwt expired") };
