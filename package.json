@@ -1,0 +1,35 @@
+{
+  "name": "portalsapi.quadropic.com",
+  "version": "1.0.0",
+  "description": "API for Portals, Official Auth System for Quadropic",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "devMigrate": "dotenv -e .env.test.local prisma migrate dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/QuadropicHQ/portalsapi.quadropic.com.git"
+  },
+  "author": "Quadropic Portals",
+  "bugs": {
+    "url": "https://github.com/QuadropicHQ/portalsapi.quadropic.com/issues"
+  },
+  "homepage": "https://github.com/QuadropicHQ/portalsapi.quadropic.com#readme",
+  "dependencies": {
+    "@prisma/client": "^5.18.0",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.9.0",
+    "dotenv-cli": "^7.4.2",
+    "eslint": "^9.9.0",
+    "globals": "^15.9.0",
+    "nodemon": "^3.1.4",
+    "prisma": "^5.18.0"
+  }
+}

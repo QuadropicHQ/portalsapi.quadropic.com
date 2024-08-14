@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%=err_code%> Error : Quadropic Portals API</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-black flex flex-col justify-between min-h-screen">
+    <div class="flex justify-center items-center flex-grow">
+      <h1 class="text-3xl font-bold text-red-600"><%=err_code%> Error</h1>
+    </div>
+    <div class="flex justify-center items-center flex-grow">
+      <h1 class="text-xl text-white">Requested from <%=ipadress%></h1>
+    </div>
+    <footer class="text-center text-gray-600 py-4">
+      <p>Quadropic Portals</p>
+    </footer>
+  </body>
+</html>
