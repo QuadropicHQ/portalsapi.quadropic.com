@@ -2,7 +2,7 @@
 
 // Mock Users
 
-const users = [
+var users = [
   {
     id: "alexf1",
     name: "Alex Fendrich",
@@ -20,7 +20,7 @@ const users = [
 //TODO: IMPORTANT: For SQL dev, let the session be a separate table and add a relation to users table
 
 // Session Data decoded but originally in form of List of IDs which are UNIQUE
-const sessions = [
+var sessions = [
   {
     id: "session1",
     userId: "alexf1",
@@ -40,16 +40,15 @@ const blockedUsers = [];
 
 //Add a new session to user
 function createSession(userId, sessionId) {
-  const session = sessions.find((u) => s.id === sessionId);
+  const session = sessions.find((s) => s.id === sessionId);
   if (session) {
     sessions.push({ id: sessionId, userId: userId });
   }
 }
 
 // Remove a session from user
-function removeSessionFromUser(userId) {
-  const sessionId = `session${sessions.length + 1}`;
-  const session = sessions.find((u) => s.id === sessionId);
+function removeSessionFromUser(userId, sessionId) {
+  const session = sessions.find((s) => s.id === sessionId);
   if (session && session.userId === userId) {
     sessions = sessions.filter((s) => s.id !== sessionId);
   }
@@ -58,7 +57,7 @@ function removeSessionFromUser(userId) {
 
 // Check User for Login
 function checkUser(id, password) {
-  const user = users.find((u) => u.id === id);
+  let user = users.find((u) => u.id === id);
   if (user && user.password === password) {
     user = { id: user.id, name: user.name, email: user.email };
     return user;
@@ -84,4 +83,8 @@ function blockUser(username) {
   blockedUsers.push(username);
 }
 
-export { checkUser, addUser, blockUser };
+module.exports = {
+  checkUser: checkUser,
+  addUser: addUser,
+  blockUser: blockUser,
+};
