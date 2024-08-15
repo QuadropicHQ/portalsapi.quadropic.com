@@ -1,8 +1,8 @@
 const jwt = require("jsonwebtoken");
 
 //FIXME: Make Separate RSA Key Pair for ACCESS TOKEN as well as REFRESH TOKEN
-const accessTokenKey = process.env.ACCESS_TOKEN_SECRET;
-const refreshTokenKey = process.env.REFRESH_TOKEN_SECRET;
+const accessTokenKey = `${process.env.ACCESS_TOKEN_SECRET}`;
+const refreshTokenKey = `${process.env.REFRESH_TOKEN_SECRET}`;
 
 // Expiry Time for Access Token and Refresh Token
 const accessKeyExpireTime = "5m";

@@ -30,7 +30,7 @@ npm run devMigrate
 npm run dev
 ```
 
-6. Run Production Server
+6. Run Production [PROD] Server
 
 ```
 npm run migrate

@@ -1,4 +1,4 @@
-const { verifyJWT, signJWT } = require("../../utils/jwt/root");
+const { verifyJWT, signJWT } = require("../../utils/gen/jwt/root");
 
 function deserializeUser(req, res, next) {
   const { accessToken, refreshToken } = req.cookies;

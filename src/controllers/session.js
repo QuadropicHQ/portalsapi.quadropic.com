@@ -1,10 +1,10 @@
-const { signJWT } = require("../jwt/root");
+const { signJWT } = require("../utils/gen/jwt/root");
 
 const {
   createSession,
   removeSessionFromUser,
   checkUser,
-} = require("../db/mockdata"); //FIXME: When COde completed replace MockData with Root
+} = require("../utils/db/mockdata"); //FIXME: When COde completed replace MockData with Root
 
 function createSessionController(req, res) {
   const { id, password } = req.body;
