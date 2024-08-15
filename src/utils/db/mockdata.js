@@ -53,6 +53,17 @@ function removeSessionFromUser(userId, sessionId) {
   return sessionId;
 }
 
+// Check Session is Available for particular user
+function checkSession(userId, sessionId) {
+  console.debug(sessions);
+  const session = sessions.find((s) => s.id === sessionId);
+  if (session && session.userId === userId) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 // Check User for Login
 function checkUser(id, password) {
   let user = users.find((u) => u.id === id);
@@ -89,4 +100,5 @@ module.exports = {
   blockUser,
   createSession, // Export the createSession function
   removeSessionFromUser,
+  checkSession,
 };

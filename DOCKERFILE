@@ -1,16 +1,15 @@
 FROM node: 18-alpine
 
-WORKDIR /
+WORKDIR /usr/src/portalsapi
 
 COPY package*.json ./
 
 RUN npm install
 
-# TODO: Add up .env support 
-# TODO: If you are building your code for production
-# RUN npm ci --omit=dev
-
 COPY . .
 
-EXPOSE 3000
+EXPOSE 8080
+
+#TODO: write the command to run the application
+#TODO: ADD environment variables
 CMD [ "node", "index.js" ]

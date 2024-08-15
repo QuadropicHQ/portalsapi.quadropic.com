@@ -7,7 +7,8 @@
     "dev": "nodemon src/index.js",
     "devMigrate": "dotenv -e .env.test.local prisma migrate dev",
     "start": "dotenv -e .env.prod node src/index.js",
-    "migrate": "dotenv -e .env.prod prisma migrate dev"
+    "migrate": "dotenv -e .env.prod prisma migrate dev",
+    "docker": "docker build -t imgportalsapi ."
   },
   "repository": {
     "type": "git",

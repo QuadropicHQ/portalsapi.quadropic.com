@@ -1,4 +1,5 @@
 const { verifyJWT, signJWT } = require("../../utils/gen/jwt/root");
+const { checkSession } = require("../../utils/db/mockdata");
 
 function deserializeUser(req, res, next) {
   const { accessToken, refreshToken } = req.cookies;
@@ -27,6 +28,12 @@ function deserializeUser(req, res, next) {
   const session = refersh.payload.sessionId;
 
   if (!session) {
+    return next();
+  }
+
+  console.log(refersh.payload.userId, session);
+
+  if (!checkSession(refersh.payload.userId, session)) {
     return next();
   }
 
