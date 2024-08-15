@@ -30,6 +30,10 @@ function deserializeUser(req, res, next) {
     return next();
   }
 
+  if (refersh.payload.ip !== req.ipaddress) {
+    return next();
+  }
+
   const newAccessToken = signJWT({
     id: refersh.payload.userId,
     sessionId: session,

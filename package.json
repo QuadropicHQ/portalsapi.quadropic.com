@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/index.js",
-    "devMigrate": "dotenv -e .env.test.local prisma migrate dev"
+    "devMigrate": "dotenv -e .env.test.local prisma migrate dev",
+    "start": "dotenv -e .env.prod node src/index.js",
+    "migrate": "dotenv -e .env.prod prisma migrate dev"
   },
   "repository": {
     "type": "git",

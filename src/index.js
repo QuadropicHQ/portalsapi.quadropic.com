@@ -6,7 +6,7 @@ const deserializeUser = require("./middleware/secure/userDeserialization");
 const cookieParser = require("cookie-parser");
 
 //FIXME: For Dev environment is setup but PROD env sould be configured
-dotenv.config({ path: ".env.test.local" });
+dotenv.config();
 
 // TODO: ADD CORS after Production
 // TODO: ADD Cookie Parser

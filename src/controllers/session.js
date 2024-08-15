@@ -4,17 +4,14 @@ const {
   createSession,
   removeSessionFromUser,
   checkUser,
-} = require("../utils/db/mockdata"); //FIXME: When COde completed replace MockData with Root
+} = require("../utils/db/mockdata"); //FIXME: When Code completed replace MockData with Root
 
 function createSessionController(req, res) {
+  // Get ID and Password from request BODY
   const { id, password } = req.body;
-  // const user = checkUser(id, password);
-  const user = {
-    id: "alexf1",
-    name: "Alex",
-    email: "alexf1@quadropic.com",
-    password: "mypass",
-  };
+
+  // Check for user in Database
+  const user = checkUser(id, password);
   if (user == null) {
     return res.status(401).send("Invalid credentials");
   }
