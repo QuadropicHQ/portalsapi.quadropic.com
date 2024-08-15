@@ -34,8 +34,8 @@ function createSessionController(req, res) {
 
   // CREATE REFRESH TOKEN
   const refreshToken = signJWT(
-    { sessionId: session, ip: req.ipaddress },
-    "183d"
+    { sessionId: session, ip: req.ipaddress, userId: user.id },
+    true
   );
 
   // SET REFRESH TOKEN COOKIE
