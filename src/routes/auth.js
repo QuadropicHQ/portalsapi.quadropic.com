@@ -7,7 +7,7 @@ const {
   createSessionController,
   checkSessionController,
   removeThisSession,
-} = require("../utils/controllers/session");
+} = require("../controllers/session");
 const requireUser = require("../middleware/secure/requireUser");
 
 // Login [UNPROTECTED Route]

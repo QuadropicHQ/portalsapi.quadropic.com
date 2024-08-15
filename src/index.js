@@ -2,9 +2,11 @@ const dotenv = require("dotenv");
 const express = require("express");
 const app = express();
 const ipmeter = require("./middleware/ipmeter");
+const deserializeUser = require("./middleware/secure/userDeserialization");
+const cookieParser = require("cookie-parser");
 
 //FIXME: For Dev environment is setup but PROD env sould be configured
-dotenv.config({ path: ".env.test.local" });
+dotenv.config();
 
 // TODO: ADD CORS after Production
 // TODO: ADD Cookie Parser
@@ -17,6 +19,8 @@ app.use(
 );
 app.use(ipmeter);
 app.set("view engine", "ejs");
+app.use(cookieParser());
+app.use(deserializeUser);
 
 app.get("/", (req, res) => {
   res.render("serverok", {

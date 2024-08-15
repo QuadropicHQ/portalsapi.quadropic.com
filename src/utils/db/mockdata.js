@@ -40,10 +40,8 @@ const blockedUsers = [];
 
 //Add a new session to user
 function createSession(userId, sessionId) {
-  const session = sessions.find((s) => s.id === sessionId);
-  if (session) {
-    sessions.push({ id: sessionId, userId: userId });
-  }
+  sessions.push({ id: sessionId, userId: userId });
+  return sessionId;
 }
 
 // Remove a session from user
@@ -53,6 +51,17 @@ function removeSessionFromUser(userId, sessionId) {
     sessions = sessions.filter((s) => s.id !== sessionId);
   }
   return sessionId;
+}
+
+// Check Session is Available for particular user
+function checkSession(userId, sessionId) {
+  console.debug(sessions);
+  const session = sessions.find((s) => s.id === sessionId);
+  if (session && session.userId === userId) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 // Check User for Login
@@ -74,17 +83,22 @@ function addUser(username, password, email) {
     email: email,
     password: password,
   });
-  createSession(username, `session${sessions.length + 1}`);
+  const sid = createSession(username, `session${sessions.length + 1}`);
+  return sid;
 }
 
 // Block User by removing all sessions
 function blockUser(username) {
   sessions = sessions.filter((s) => s.userId !== username);
   blockedUsers.push(username);
+  return true;
 }
 
 module.exports = {
-  checkUser: checkUser,
-  addUser: addUser,
-  blockUser: blockUser,
+  checkUser,
+  addUser,
+  blockUser,
+  createSession, // Export the createSession function
+  removeSessionFromUser,
+  checkSession,
 };
