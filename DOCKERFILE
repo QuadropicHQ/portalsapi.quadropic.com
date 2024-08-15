@@ -10,6 +10,4 @@ COPY . .
 
 EXPOSE 8080
 
-#TODO: write the command to run the application
-#TODO: ADD environment variables
 CMD [ "node", "index.js" ]
