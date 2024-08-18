@@ -38,6 +38,9 @@ var sessions = [
 //Blocked Users
 const blockedUsers = [];
 
+//TEMPS passKey
+var passTemps = [];
+
 //Add a new session to user
 function createSession(userId, sessionId) {
   sessions.push({ id: sessionId, userId: userId });
@@ -73,6 +76,22 @@ function checkUser(id, password) {
   } else {
     return null;
   }
+}
+
+// Add new PassKey
+function addPassKey(id, passkeyCreds) {
+  users = users.map((u) => {
+    if (u.id === id) {
+      u.passkeyCreds = passkeyCreds;
+    }
+    return true;
+  });
+}
+
+//Get Passkey from User DB
+function getPassKey(userid) {
+  const user = users.find((u) => u.id === userid);
+  return user.passkeyCreds;
 }
 
 // Add User
