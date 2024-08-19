@@ -4,10 +4,10 @@ const router = express.Router();
 const requireUser = require("../middleware/secure/requireUser");
 const {
   registerPasskeyChallenge,
-  verifyPasskey,
+  verifyRegisterPasskey,
 } = require("../controllers/passkeys");
 
 router.get("/rebuild", requireUser, registerPasskeyChallenge);
-router.post("/verify", verifyPasskey);
+router.post("/firstverify", verifyRegisterPasskey);
 
 module.exports = router;

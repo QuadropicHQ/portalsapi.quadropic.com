@@ -38,8 +38,8 @@ var sessions = [
 //Blocked Users
 const blockedUsers = [];
 
-//TEMPS passKey
-var passTemps = [];
+// Temporary Challenges
+var challenges = [];
 
 //Add a new session to user
 function createSession(userId, sessionId) {
@@ -83,6 +83,19 @@ function addPassKey(id, passkeyCreds) {
   return true;
 }
 
+//Create Challenge for Passkey verification
+function createChallengePayload(userid, challengePay) {
+  challenges.push({ user: userid, challenge: challengePay });
+  return true;
+}
+
+//Get Challenge for Passkey verification and then delete it
+function useAndExpireChallenge(userid) {
+  const passTemp = challenges.find((p) => p.user === userid);
+  challenges = challenges.filter((p) => p.user !== userid);
+  return passTemp.challenge;
+}
+
 //Get Passkey from User DB
 function getPassKey(userid) {
   const user = users.find((u) => u.id === userid);
@@ -112,9 +125,11 @@ module.exports = {
   checkUser,
   addUser,
   blockUser,
-  createSession, // Export the createSession function
+  createSession,
   removeSessionFromUser,
   checkSession,
   getPassKey,
   addPassKey,
+  createChallengePayload,
+  useAndExpireChallenge,
 };
