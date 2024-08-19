@@ -10,8 +10,6 @@ function createSessionController(req, res) {
   // Get ID and Password from request BODY
   const { id, password } = req.body;
 
-  console.log("ID: ", id);
-
   // Check for user in Database
   const user = checkUser(id, password);
   if (user == null) {

@@ -58,7 +58,6 @@ function removeSessionFromUser(userId, sessionId) {
 
 // Check Session is Available for particular user
 function checkSession(userId, sessionId) {
-  console.debug(sessions);
   const session = sessions.find((s) => s.id === sessionId);
   if (session && session.userId === userId) {
     return true;
@@ -80,12 +79,8 @@ function checkUser(id, password) {
 
 // Add new PassKey
 function addPassKey(id, passkeyCreds) {
-  users = users.map((u) => {
-    if (u.id === id) {
-      u.passkeyCreds = passkeyCreds;
-    }
-    return true;
-  });
+  users[users.findIndex((u) => u.id === id)].passkeyCreds = passkeyCreds;
+  return true;
 }
 
 //Get Passkey from User DB
@@ -120,4 +115,6 @@ module.exports = {
   createSession, // Export the createSession function
   removeSessionFromUser,
   checkSession,
+  getPassKey,
+  addPassKey,
 };

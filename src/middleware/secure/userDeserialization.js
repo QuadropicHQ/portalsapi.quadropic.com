@@ -31,8 +31,6 @@ function deserializeUser(req, res, next) {
     return next();
   }
 
-  console.log(refersh.payload.userId, session);
-
   if (!checkSession(refersh.payload.userId, session)) {
     return next();
   }
