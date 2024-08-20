@@ -25,46 +25,53 @@ async function registerPasskeyChallenge(req, res) {
 async function verifyRegisterPasskey(req, res) {
   const { userid, cred } = req.body;
   const passKeyPubCreds = useAndExpireChallenge(userid);
-  console.log(JSON.parse(cred));
-  const verifier = await SimpleWebAuthnServer.verifyRegistrationResponse({
-    expectedChallenge: passKeyPubCreds,
-    expectedOrigin: "http://localhost:3000",
-    expectedRPID: "localhost",
-    response: JSON.parse(cred),
-  });
-  if (!verifier.verified)
-    return res.json({ error: "Challenged not Resolved!" }).status(401);
-  addPassKey(userid, verifier.registrationInfo);
-  return res.json({ verified: true }).status(200);
+  try {
+    const verifier = await SimpleWebAuthnServer.verifyRegistrationResponse({
+      expectedChallenge: passKeyPubCreds,
+      expectedOrigin: "http://localhost:3000",
+      expectedRPID: "localhost",
+      response: JSON.parse(cred),
+    });
+    if (!verifier.verified)
+      return res.status(401).send({ error: "Unresolved Challenge" });
+    addPassKey(userid, verifier.registrationInfo);
+    return res.json({ verified: true }).status(200);
+  } catch (error) {
+    return res.status(401).send({ error: "Unresolved Challenge" });
+  }
 }
 
 async function generateLoginPasskeyChallenge(req, res) {
   const { userId } = req.body;
-  const challenge = await SimpleWebAuthnServer.generateLoginOptions({
+  const challenge = await SimpleWebAuthnServer.generateAuthenticationOptions({
     rpID: "localhost",
   });
-  addPassKey(userId, challenge.challenge);
+  createChallengePayload(userId, challenge.challenge);
   return res.json({ options: challenge });
 }
 
-async function verifyPasskey(req, res) {
+async function verifyLoginPasskey(req, res) {
   const { userId, cred } = req.body;
-  const passKeyPubCreds = getPassKey(userId);
+  const passKeyPubCreds = useAndExpireChallenge(userId);
+  const userPassKey = getPassKey(userId);
   const verifier = await SimpleWebAuthnServer.verifyAuthenticationResponse({
     expectedChallenge: passKeyPubCreds,
     expectedOrigin: "http://localhost:3000",
     expectedRPID: "localhost",
-    response: cred,
+    response: JSON.parse(cred),
+    authenticator: userPassKey,
   });
   if (!verifier.verified) {
-    return res.json({ success: true }).status(200);
+    return res
+      .status(401)
+      .json({ success: false, error: "Passkey Verification Failed" });
   }
-  return res.json({ success: false }).status(401);
+  return res.status(200).json({ success: true });
 }
 
 module.exports = {
   registerPasskeyChallenge,
-  verifyPasskey,
   verifyRegisterPasskey,
   generateLoginPasskeyChallenge,
+  verifyLoginPasskey,
 };

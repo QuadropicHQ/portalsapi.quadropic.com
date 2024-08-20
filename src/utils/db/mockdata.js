@@ -79,8 +79,13 @@ function checkUser(id, password) {
 
 // Add new PassKey
 function addPassKey(id, passkeyCreds) {
-  users[users.findIndex((u) => u.id === id)].passkeyCreds = passkeyCreds;
-  return true;
+  //Add passkey to user with given ID in users[]
+  users = users.map((u) => {
+    if (u.id === id) {
+      u.passkey = passkeyCreds;
+    }
+    return u;
+  });
 }
 
 //Create Challenge for Passkey verification
@@ -99,7 +104,8 @@ function useAndExpireChallenge(userid) {
 //Get Passkey from User DB
 function getPassKey(userid) {
   const user = users.find((u) => u.id === userid);
-  return user.passkeyCreds;
+  console.log(user);
+  return user.passkey;
 }
 
 // Add User
