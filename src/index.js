@@ -8,6 +8,13 @@ const cors = require("cors");
 
 //FIXME: For Dev environment is setup but PROD env sould be configured
 dotenv.config({ path: ".env.test.local" });
+const result = dotenv.config({ path: ".env.test.local" });
+
+if (result.error) {
+  console.error("Error loading .env file:", result.error);
+} else {
+  console.log("Loaded environment variables:", result.parsed);
+}
 
 // TODO: ADD CORS after Production
 // TODO: ADD Cookie Parser
