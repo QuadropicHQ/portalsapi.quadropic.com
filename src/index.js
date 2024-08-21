@@ -7,14 +7,14 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
 //FIXME: For Dev environment is setup but PROD env sould be configured
-dotenv.config();
+dotenv.config({ path: ".env.test.local" });
 
 // TODO: ADD CORS after Production
 // TODO: ADD Cookie Parser
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: process.env.CORS_ORIGIN,
     credentials: true,
   })
 );
@@ -41,5 +41,6 @@ const authRoutes = require("./routes/auth");
 
 app.use("/auth", authRoutes);
 app.use("/biometrics", require("./routes/biometrics"));
+app.use("/register", require("./routes/register"));
 
 app.listen(8080);

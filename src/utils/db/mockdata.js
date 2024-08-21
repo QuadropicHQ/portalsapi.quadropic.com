@@ -41,6 +41,9 @@ const blockedUsers = [];
 // Temporary Challenges
 var challenges = [];
 
+// E-Mail Challenges
+var emailChallenges = [];
+
 //Add a new session to user
 function createSession(userId, sessionId) {
   sessions.push({ id: sessionId, userId: userId });
@@ -108,6 +111,27 @@ function getPassKey(userid) {
   return user.passkey;
 }
 
+// Make a function that return if there are users with similar id or email given id and email if exists return true
+function checkUserExists(id, email, ipadd) {
+  let datapay = {};
+  const user = users.find((u) => u.id === id || u.email === email);
+  if (user) {
+    datapay = {
+      available: false,
+      emailOtp: null,
+      errorType: user.id === id ? "id" : "email",
+      ip: ipadd,
+    };
+    return datapay;
+  }
+
+  //Random 6 digit number for EMAIL CHALLENGE
+  const randomEmailChallenge = Math.floor(100000 + Math.random() * 900000);
+  emailChallenges.push({ email: email, challenge: randomEmailChallenge });
+  datapay = { available: true, emailOtp: randomEmailChallenge, ip: ipadd };
+  return datapay;
+}
+
 // Add User
 function addUser(username, password, email) {
   users.push({
@@ -138,4 +162,5 @@ module.exports = {
   addPassKey,
   createChallengePayload,
   useAndExpireChallenge,
+  checkUserExists,
 };

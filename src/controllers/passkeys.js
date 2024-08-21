@@ -54,19 +54,25 @@ async function verifyLoginPasskey(req, res) {
   const { userId, cred } = req.body;
   const passKeyPubCreds = useAndExpireChallenge(userId);
   const userPassKey = getPassKey(userId);
-  const verifier = await SimpleWebAuthnServer.verifyAuthenticationResponse({
-    expectedChallenge: passKeyPubCreds,
-    expectedOrigin: "http://localhost:3000",
-    expectedRPID: "localhost",
-    response: JSON.parse(cred),
-    authenticator: userPassKey,
-  });
-  if (!verifier.verified) {
+  try {
+    const verifier = await SimpleWebAuthnServer.verifyAuthenticationResponse({
+      expectedChallenge: passKeyPubCreds,
+      expectedOrigin: "http://localhost:3000",
+      expectedRPID: "localhost",
+      response: JSON.parse(cred),
+      authenticator: userPassKey,
+    });
+    if (!verifier.verified) {
+      return res
+        .status(401)
+        .json({ success: false, error: "Passkey Verification Failed" });
+    }
+    return res.status(200).json({ success: true });
+  } catch (error) {
     return res
       .status(401)
       .json({ success: false, error: "Passkey Verification Failed" });
   }
-  return res.status(200).json({ success: true });
 }
 
 module.exports = {
