@@ -120,27 +120,30 @@ function checkUserExists(id, email, ipadd) {
       available: false,
       emailOtp: null,
       errorType: user.id === id ? "id" : "email",
-      ip: ipadd,
     };
     return datapay;
   }
 
   //Random 6 digit number for EMAIL CHALLENGE
   const randomEmailChallenge = Math.floor(100000 + Math.random() * 900000);
-  emailChallenges.push({ email: email, challenge: randomEmailChallenge });
+  emailChallenges.push({ id: id, challenge: randomEmailChallenge });
   datapay = { available: true, emailOtp: randomEmailChallenge, ip: ipadd };
   return datapay;
 }
 
 // Add User
-function addUser(username, password, email) {
+function addUser(id, name, email, ip, otp) {
+  const emailChallenge = emailChallenges.find((e) => e.id === id);
+  console.log(emailChallenge);
+  if (!emailChallenge || emailChallenge.challenge !== Number(otp)) {
+    return null;
+  }
   users.push({
-    id: username,
-    name: username,
+    id: id,
+    name: name,
     email: email,
-    password: password,
   });
-  const sid = createSession(username, `session${sessions.length + 1}`);
+  const sid = createSession(id, `session${sessions.length + 1}`);
   return sid;
 }
 
