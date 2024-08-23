@@ -22,11 +22,16 @@ async function startLogin(req, res) {
       }
     );
     //================================
+    //FIXME: Uncommnet this and reImplement Mailer
+    console.log(checkUser.emailOtp);
     await sendRegOTP(email, checkUser.emailOtp);
     return res
       .status(200)
       .cookie("tempAuth", tempAuthCookie, {
+        maxAge: 30 * 60 * 1000, // 30 Minutes
         httpOnly: true,
+      })
+      .cookie("tempAuthClient", tempAuthCookie, {
         maxAge: 30 * 60 * 1000, // 30 Minutes
       })
       .send({ available: checkUser.available, emailsent: true });
@@ -52,8 +57,9 @@ async function completeReg(req, res) {
     }
     return res.status(200).send({ success: true });
   } catch (error) {
-    console.log(error);
-    return res.status(401).send({ error: error });
+    return res
+      .status(401)
+      .send({ errorMessage: "Some Error Occured in Verifying OTP" });
   }
 }
 

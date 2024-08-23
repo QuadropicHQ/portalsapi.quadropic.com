@@ -14,7 +14,9 @@ dotenv.config({ path: ".env.test.local" });
 
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type"],
     credentials: true,
   })
 );

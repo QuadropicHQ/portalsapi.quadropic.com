@@ -80,6 +80,15 @@ function checkUser(id, password) {
   }
 }
 
+function getUserById(id) {
+  const oUser = users.find((u) => u.id === id);
+  return {
+    id: oUser.id,
+    name: oUser.name,
+    email: oUser.email,
+  };
+}
+
 // Add new PassKey
 function addPassKey(id, passkeyCreds) {
   //Add passkey to user with given ID in users[]
@@ -107,7 +116,6 @@ function useAndExpireChallenge(userid) {
 //Get Passkey from User DB
 function getPassKey(userid) {
   const user = users.find((u) => u.id === userid);
-  console.log(user);
   return user.passkey;
 }
 
@@ -134,7 +142,6 @@ function checkUserExists(id, email, ipadd) {
 // Add User
 function addUser(id, name, email, ip, otp) {
   const emailChallenge = emailChallenges.find((e) => e.id === id);
-  console.log(emailChallenge);
   if (!emailChallenge || emailChallenge.challenge !== Number(otp)) {
     return null;
   }
@@ -166,4 +173,5 @@ module.exports = {
   createChallengePayload,
   useAndExpireChallenge,
   checkUserExists,
+  getUserById,
 };
