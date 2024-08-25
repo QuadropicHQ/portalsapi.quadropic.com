@@ -5,7 +5,8 @@ const {
   removeSessionFromUser,
   checkUser,
   getUserById,
-} = require("../utils/db/mockdata"); //FIXME: When Code completed replace MockData with Root
+} = require("../utils/db/root"); //FIXME: When Code completed replace MockData with Root
+const { autoRToken, autoAToken } = require("./token");
 
 function createSessionController(req, res) {
   // Get ID and Password from request BODY
@@ -68,47 +69,31 @@ function checkSessionController(req, res) {
   return res.send(req.user);
 }
 
-function CreateSessionNoPropsController(req, res) {
-  const id = req.user;
-  const verified = req.verified;
+async function CreateSessionNoPropsController(req, res) {
+  try {
+    const id = req.user;
+    const verified = req.verified;
 
-  console.log("Running Middleware Parametered Query with userid:", id);
+    console.debug("Running Middleware Parametered Query with userid:", id);
 
-  // Check for user in Database
-  const user = getUserById(id);
-  if (user == null || !verified) {
-    return res.status(401).send("Invalid credentials");
+    // Check for user in Database
+    const user = await getUserById(id);
+    if (!user || !verified) {
+      return res.status(401).send("Invalid credentials");
+    }
+
+    // Create a session
+    const sessionId = await createSession(user.username, "samplesession");
+
+    // SET ACCESS TOKEN and REFRESH TOKEN
+    autoAToken(user.username, sessionId, req, res);
+    autoRToken(user.username, sessionId, req, res);
+
+    return res.send("Session Created");
+  } catch (error) {
+    console.error("Error in createSessionNoPropsController:", error);
+    return res.status(500).send("Internal Server Error");
   }
-
-  console.log("Running Middleware Parametered Query with userid:", id);
-
-  // Create a session
-  const session = createSession(user.id, "samplesession");
-
-  //CREATE ACCESS TOKEN
-  const accessToken = signJWT({ id: user.id, sessionId: session }, "5m");
-
-  // SET ACCESS TOKEN COOKIE
-  res.cookie("accessToken", accessToken, {
-    httpOnly: true,
-    maxAge: 5 * 60 * 1000, // 5 Minutes
-    //TODO: secure: true, ENFORCE HTTPS
-  });
-
-  // CREATE REFRESH TOKEN
-  const refreshToken = signJWT(
-    { sessionId: session, ip: req.ipaddress, userId: user.id },
-    true
-  );
-
-  // SET REFRESH TOKEN COOKIE
-  res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    maxAge: 183 * 24 * 60 * 60 * 1000, //183 Days
-    //TODO: secure: true, ENFORCE HTTPS
-  });
-
-  return res.send("Session Created");
 }
 
 module.exports = {

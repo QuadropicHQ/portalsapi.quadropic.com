@@ -1,8 +1,8 @@
 const SimpleWebAuthnServer = require("@simplewebauthn/server");
 
-const { getPassKey, useAndExpireChallenge } = require("../utils/db/mockdata");
+const { getPassKey, useAndExpireChallenge } = require("../../utils/db/root");
 
-async function verifyLoginPasskey(req, res, next) {
+async function verifyLoginPasskeyNoProps(req, res, next) {
   const { userId, cred } = req.body;
   const passKeyPubCreds = useAndExpireChallenge(userId);
   const userPassKey = getPassKey(userId);
@@ -30,3 +30,5 @@ async function verifyLoginPasskey(req, res, next) {
       .json({ verified: false, error: "Passkey Verification Failed" });
   }
 }
+
+module.exports = { verifyLoginPasskeyNoProps };

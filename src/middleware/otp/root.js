@@ -1,4 +1,4 @@
-const { addUser } = require("../../utils/db/mockdata");
+const { addUser } = require("../../utils/db/root");
 const jwt = require("jsonwebtoken");
 
 async function completeRegMidleWare(req, res, next) {
@@ -6,7 +6,7 @@ async function completeRegMidleWare(req, res, next) {
     const { otp } = req.body;
     const tempAuth = req.cookies.tempAuth;
     const decoded = jwt.verify(tempAuth, process.env.TEMP_VER_SECRET);
-    const getConfirmation = addUser(
+    const getConfirmation = await addUser(
       decoded.id,
       decoded.dispname,
       decoded.email,
@@ -21,6 +21,7 @@ async function completeRegMidleWare(req, res, next) {
     req.user = decoded.id;
     next();
   } catch (error) {
+    console.error("Error in completeReg:", error);
     req.verified = false;
     return res
       .status(401)
