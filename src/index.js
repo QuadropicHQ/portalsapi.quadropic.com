@@ -4,12 +4,23 @@ const app = express();
 const ipmeter = require("./middleware/ipmeter");
 const deserializeUser = require("./middleware/secure/userDeserialization");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
 //FIXME: For Dev environment is setup but PROD env sould be configured
-dotenv.config();
+dotenv.config({ path: ".env.test.local" });
 
 // TODO: ADD CORS after Production
 // TODO: ADD Cookie Parser
+
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type"],
+    credentials: true,
+  })
+);
+
 app.use(express.json({ limit: "4kb" }));
 app.use(
   express.urlencoded({
@@ -31,5 +42,7 @@ app.get("/", (req, res) => {
 const authRoutes = require("./routes/auth");
 
 app.use("/auth", authRoutes);
+app.use("/biometrics", require("./routes/biometrics"));
+app.use("/register", require("./routes/register"));
 
 app.listen(8080);

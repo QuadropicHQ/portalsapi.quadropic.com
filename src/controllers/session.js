@@ -4,7 +4,9 @@ const {
   createSession,
   removeSessionFromUser,
   checkUser,
-} = require("../utils/db/mockdata"); //FIXME: When Code completed replace MockData with Root
+  getUserById,
+} = require("../utils/db/root"); //FIXME: When Code completed replace MockData with Root
+const { autoRToken, autoAToken } = require("./token");
 
 function createSessionController(req, res) {
   // Get ID and Password from request BODY
@@ -67,9 +69,37 @@ function checkSessionController(req, res) {
   return res.send(req.user);
 }
 
+async function CreateSessionNoPropsController(req, res) {
+  try {
+    const id = req.user;
+    const verified = req.verified;
+
+    console.debug("Running Middleware Parametered Query with userid:", id);
+
+    // Check for user in Database
+    const user = await getUserById(id);
+    if (!user || !verified) {
+      return res.status(401).send("Invalid credentials");
+    }
+
+    // Create a session
+    const sessionId = await createSession(user.username, "samplesession");
+
+    // SET ACCESS TOKEN and REFRESH TOKEN
+    autoAToken(user.username, sessionId, req, res);
+    autoRToken(user.username, sessionId, req, res);
+
+    return res.send("Session Created");
+  } catch (error) {
+    console.error("Error in createSessionNoPropsController:", error);
+    return res.status(500).send("Internal Server Error");
+  }
+}
+
 module.exports = {
   createSessionController,
   removeSessionController,
   removeThisSession,
   checkSessionController,
+  CreateSessionNoPropsController,
 };

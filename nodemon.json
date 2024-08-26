@@ -3,8 +3,5 @@
   "ignore": [".git", "node_modules/", "dist/", "coverage/"],
   "watch": ["src/"],
   "execMap": {},
-  "env": {
-    "NODE_ENV": "development"
-  },
   "ext": "js,json,ts"
 }

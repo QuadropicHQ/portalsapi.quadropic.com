@@ -130,6 +130,7 @@ dist
 # Prisma
 yarn-error.log/
 vendor/
+migrations/
 tmp/
 dist/
 .DS_Store

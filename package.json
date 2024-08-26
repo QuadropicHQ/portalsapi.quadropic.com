@@ -21,11 +21,14 @@
   "homepage": "https://github.com/QuadropicHQ/portalsapi.quadropic.com#readme",
   "dependencies": {
     "@prisma/client": "^5.18.0",
+    "@simplewebauthn/server": "^10.0.1",
     "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "express": "^4.19.2",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "resend": "^4.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",

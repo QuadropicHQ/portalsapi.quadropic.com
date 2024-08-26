@@ -4,7 +4,7 @@ const {
   createSession,
   removeSessionFromUser,
   checkUser,
-} = require("../db/mockdata"); //FIXME: When COde completed replace MockData with Root
+} = require("../db/root"); //FIXME: When COde completed replace MockData with Root
 
 function createSessionController(req, res) {
   const { id, password } = req.body;

@@ -1,5 +1,10 @@
 const { verifyJWT, signJWT } = require("../../utils/gen/jwt/root");
-const { checkSession } = require("../../utils/db/mockdata");
+const { checkSession } = require("../../utils/db/root");
+const {
+  verifyRefreshToken,
+  verifyAccessToken,
+  autoAToken,
+} = require("../../controllers/token");
 
 function deserializeUser(req, res, next) {
   const { accessToken, refreshToken } = req.cookies;
@@ -7,7 +12,7 @@ function deserializeUser(req, res, next) {
     return next();
   }
 
-  var { payload, expired } = verifyJWT(accessToken);
+  var { payload, expired } = verifyAccessToken(accessToken);
 
   if (!accessToken && refreshToken) {
     payload = null;
@@ -19,19 +24,19 @@ function deserializeUser(req, res, next) {
     return next();
   }
 
-  const refersh = expired ? verifyJWT(refreshToken, true) : { payload: null };
+  const refersh = expired
+    ? verifyRefreshToken(refreshToken)
+    : { payload: null };
 
   if (!refersh) {
     return next();
   }
 
-  const session = refersh.payload.sessionId;
+  const session = refersh.sessionId;
 
   if (!session) {
     return next();
   }
-
-  console.log(refersh.payload.userId, session);
 
   if (!checkSession(refersh.payload.userId, session)) {
     return next();
@@ -41,15 +46,10 @@ function deserializeUser(req, res, next) {
     return next();
   }
 
-  const newAccessToken = signJWT({
-    id: refersh.payload.userId,
-    sessionId: session,
-  });
-
-  res.cookie("accessToken", newAccessToken, {
-    maxAge: 5 * 60 * 1000, // 5 minutes
-    httpOnly: true,
-  });
+  const newAccessToken = signJWT(
+    { id: refersh.payload.userId, sessionId: session },
+    "5m"
+  );
 
   req.user = verifyJWT(newAccessToken).payload;
 
