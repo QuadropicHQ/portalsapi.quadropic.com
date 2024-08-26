@@ -1,5 +1,5 @@
 const { sendRegOTP } = require("../utils/gen/mail/sendregotp");
-const { checkUserExists, addUser } = require("../utils/db/root");
+const { checkUserExists, addUser, setupMisc } = require("../utils/db/root");
 const jwt = require("jsonwebtoken");
 
 async function startLogin(req, res) {
@@ -69,4 +69,26 @@ async function completeReg(req, res) {
   }
 }
 
-module.exports = { startLogin, completeReg };
+async function fillMisc(req, res) {
+  try {
+    const user = req.user;
+
+    const { dob, about, country } = req.body;
+
+    const result = await setupMisc(user.id, dob, about, country);
+
+    if (!result) {
+      return res
+        .status(401)
+        .send({ error: "Invalid from Server", suspicious: true });
+    }
+
+    return res.status(200).send({ success: true });
+  } catch (error) {
+    return res
+      .status(500)
+      .send({ errorMessage: "An error occurred during registration." });
+  }
+}
+
+module.exports = { startLogin, completeReg, fillMisc };

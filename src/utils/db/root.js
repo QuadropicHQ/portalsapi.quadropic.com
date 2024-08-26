@@ -165,6 +165,14 @@ async function blockUser(username) {
   return true;
 }
 
+async function setupMisc(id, dob, about, country) {
+  const dobDate = new Date(dob);
+  await prisma.user.update({
+    where: { id },
+    data: { dob: dobDate, about, country },
+  });
+}
+
 module.exports = {
   checkUser,
   addUser,
@@ -178,4 +186,5 @@ module.exports = {
   useAndExpireChallenge,
   checkUserExists,
   getUserById,
+  setupMisc,
 };

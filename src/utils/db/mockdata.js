@@ -161,6 +161,18 @@ function blockUser(username) {
   return true;
 }
 
+// Make function named setupMisc with parameters id, dob, about, country
+function setupMisc(id, dob, about, country) {
+  users = users.map((u) => {
+    if (u.id === id) {
+      u.dob = dob;
+      u.about = about;
+      u.country = country;
+    }
+    return u;
+  });
+}
+
 module.exports = {
   checkUser,
   addUser,
@@ -174,4 +186,5 @@ module.exports = {
   useAndExpireChallenge,
   checkUserExists,
   getUserById,
+  setupMisc,
 };
