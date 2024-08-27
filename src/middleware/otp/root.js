@@ -5,7 +5,7 @@ async function completeRegMidleWare(req, res, next) {
   try {
     const { otp } = req.body;
     const tempAuth = req.cookies.tempAuth;
-    const decoded = jwt.verify(tempAuth, process.env.TEMP_VER_SECRET);
+    const decoded = jwt.verify(tempAuth, String(process.env.TEMP_VER_SECRET));
     const getConfirmation = await addUser(
       decoded.id,
       decoded.dispname,

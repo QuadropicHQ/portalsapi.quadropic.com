@@ -146,11 +146,7 @@ async function addUser(username, name, email, dob, otp, ip) {
     },
   });
 
-  const sid = await createSession(
-    username,
-    `session${user.sessions.length + 1}`
-  );
-  return sid;
+  return username;
 }
 
 // Block user by removing all sessions
