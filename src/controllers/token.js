@@ -1,9 +1,9 @@
 const { signJWT, verifyJWT } = require("../utils/gen/jwt/root");
 
 // SECRETS FOR TOKENS
-const accessSceretToken = "accesstokensecret";
-const refreshSecretToken = "refreshtokensecret";
-const tempSecretToken = "temptokensecret";
+const accessSceretToken = String(process.env.ACCESS_TOKEN_SECRET);
+const refreshSecretToken = String(process.env.REFRESH_TOKEN_SECRET);
+const tempSecretToken = String(process.env.TEMP_VER_SECRET);
 
 // Constant Time Expiry for Tokens
 const accessExpiryTime = 4 * 60 * 60 * 1000; // 4 Hours

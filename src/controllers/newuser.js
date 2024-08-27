@@ -17,13 +17,13 @@ async function startLogin(req, res) {
     const authTempPayload = { id, email, dispname, ip };
     const tempAuthCookie = jwt.sign(
       authTempPayload,
-      process.env.TEMP_VER_SECRET,
+      String(process.env.TEMP_VER_SECRET),
       { expiresIn: "30m" }
     );
 
     // Send OTP email (uncomment when the mailer is implemented)
     // await sendRegOTP(email, checkUser.emailOtp);
-
+    console.log("Started Login");
     return res
       .status(200)
       .cookie("tempAuth", tempAuthCookie, {
@@ -46,7 +46,7 @@ async function completeReg(req, res) {
     const tempAuth = req.cookies.tempAuth;
 
     // Verify the JWT token
-    const decoded = jwt.verify(tempAuth, process.env.TEMP_VER_SECRET);
+    const decoded = jwt.verify(tempAuth, String(process.env.TEMP_VER_SECRET));
     // Add user and verify OTP
     const result = await addUser(
       decoded.id,

@@ -9,7 +9,7 @@ async function verifyLoginPasskeyNoProps(req, res, next) {
   try {
     const verifier = await SimpleWebAuthnServer.verifyAuthenticationResponse({
       expectedChallenge: passKeyPubCreds,
-      expectedOrigin: "http://localhost:3000",
+      expectedOrigin: String(process.env.CORS_ORIGIN),
       expectedRPID: "localhost",
       response: JSON.parse(cred),
       authenticator: userPassKey,

@@ -6,15 +6,14 @@ const deserializeUser = require("./middleware/secure/userDeserialization");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
-//FIXME: For Dev environment is setup but PROD env sould be configured
-dotenv.config({ path: ".env.test.local" });
-
-// TODO: ADD CORS after Production
-// TODO: ADD Cookie Parser
+// If prod then env.prod else env.test.local
+dotenv.config({
+  path: process.env.NODE_ENV == "production" ? ".env.prod" : ".env.test.local",
+});
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: process.env.CORS_ORIGIN,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type"],
     credentials: true,

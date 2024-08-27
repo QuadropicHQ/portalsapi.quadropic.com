@@ -38,12 +38,13 @@ async function verifyRegisterPasskey(req, res) {
     const passKeyPubCreds = await useAndExpireChallenge(userid);
 
     if (!passKeyPubCreds) {
+      console.log("Challenge not found or expired");
       return res.status(401).send({ error: "Challenge not found or expired" });
     }
 
     const verifier = await SimpleWebAuthnServer.verifyRegistrationResponse({
       expectedChallenge: passKeyPubCreds,
-      expectedOrigin: "http://localhost:3000", //FIXME: Change to your actual origin
+      expectedOrigin: String(process.env.CORS_ORIGIN), //FIXME: Change to your actual origin
       expectedRPID: "localhost", //FIXME: Change to your actual RP ID
       response: JSON.parse(cred),
     });
@@ -56,6 +57,7 @@ async function verifyRegisterPasskey(req, res) {
 
     return res.status(200).json({ verified: true });
   } catch (error) {
+    console.error("Passkey verification failed:", error);
     return res.status(401).send({ error: "Unresolved Challenge" });
   }
 }
@@ -99,7 +101,7 @@ async function verifyLoginPasskey(req, res) {
 
     const verifier = await SimpleWebAuthnServer.verifyAuthenticationResponse({
       expectedChallenge: passKeyPubCreds,
-      expectedOrigin: "http://localhost:3000", //FIXME: Change to your actual origin
+      expectedOrigin: String(process.env.CORS_ORIGIN), //FIXME: Change to your actual origin
       expectedRPID: "localhost", //FIXME: Change to your actual RP ID
       response: JSON.parse(cred),
       authenticator: userPassKey,
