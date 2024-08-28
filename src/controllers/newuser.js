@@ -1,6 +1,7 @@
 const { sendRegOTP } = require("../utils/gen/mail/sendregotp");
 const { checkUserExists, addUser, setupMisc } = require("../utils/db/root");
 const jwt = require("jsonwebtoken");
+const { autoTempToken } = require("./token");
 
 async function startLogin(req, res) {
   try {
@@ -14,25 +15,14 @@ async function startLogin(req, res) {
     }
 
     // Centralized JWT signing and cookie setting
-    const authTempPayload = { id, email, dispname, ip };
-    const tempAuthCookie = jwt.sign(
-      authTempPayload,
-      String(process.env.TEMP_VER_SECRET),
-      { expiresIn: "30m" }
-    );
+    autoTempToken(id, email, dispname, ip, req, res);
 
     // Send OTP email (uncomment when the mailer is implemented)
     // await sendRegOTP(email, checkUser.emailOtp);
     console.log("Started Login");
+
     return res
       .status(200)
-      .cookie("tempAuth", tempAuthCookie, {
-        maxAge: 30 * 60 * 1000, // 30 Minutes
-        httpOnly: true,
-      })
-      .cookie("tempAuthClient", tempAuthCookie, {
-        maxAge: 30 * 60 * 1000, // 30 Minutes
-      })
       .send({ available: checkUser.available, emailsent: true });
   } catch (error) {
     console.error("Error in startLogin:", error);
