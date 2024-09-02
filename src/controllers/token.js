@@ -58,8 +58,6 @@ const autoRToken = function (sid, uid, req, res) {
   res.cookie("refreshToken", getRefreshToken(sid, req.ipaddress, uid), {
     httpOnly: true,
     maxAge: refreshExpiryTime,
-    secure: true,
-    sameSite: "None",
     domain: domain,
   });
   return true;
@@ -71,8 +69,6 @@ const autoAToken = function (uid, sid, req, res) {
   res.cookie("accessToken", aData, {
     httpOnly: true,
     maxAge: accessExpiryTime,
-    secure: true,
-    sameSite: "None",
     domain: domain,
   });
   return aData;
@@ -84,14 +80,10 @@ const autoTempToken = function (id, email, dispname, ip, req, res) {
     .cookie("tempAuth", getTempToken(id, email, dispname, ip), {
       maxAge: tempExpiryTime,
       httpOnly: true,
-      secure: true,
-      sameSite: "None",
       domain: domain,
     })
     .cookie("tempAuthClient", getTempToken(id, email, dispname, ip), {
       maxAge: tempExpiryTime - 60 * 1000,
-      secure: true,
-      sameSite: "None",
       domain: domain,
     });
   return true;
