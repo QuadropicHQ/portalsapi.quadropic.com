@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const { signJWT, verifyJWT } = require("../utils/gen/jwt/root");
 
 // SECRETS FOR TOKENS
@@ -9,6 +11,8 @@ const tempSecretToken = String(process.env.TEMP_VER_SECRET);
 const accessExpiryTime = 4 * 60 * 60 * 1000; // 4 Hours
 const refreshExpiryTime = 183 * 24 * 60 * 60 * 1000; // 183 Days
 const tempExpiryTime = 11 * 60 * 1000; // 11 Minutes
+
+const domain = process.env.CORS_ORIGIN || "yourdomain.com";
 
 // Generate ACCESS TOKEN
 const getAccessToken = function (uid, sid) {
@@ -56,6 +60,7 @@ const autoRToken = function (sid, uid, req, res) {
     maxAge: refreshExpiryTime,
     secure: true,
     sameSite: "None",
+    domain: domain,
   });
   return true;
 };
@@ -68,6 +73,7 @@ const autoAToken = function (uid, sid, req, res) {
     maxAge: accessExpiryTime,
     secure: true,
     sameSite: "None",
+    domain: domain,
   });
   return aData;
 };
@@ -80,11 +86,13 @@ const autoTempToken = function (id, email, dispname, ip, req, res) {
       httpOnly: true,
       secure: true,
       sameSite: "None",
+      domain: domain,
     })
     .cookie("tempAuthClient", getTempToken(id, email, dispname, ip), {
       maxAge: tempExpiryTime - 60 * 1000,
       secure: true,
       sameSite: "None",
+      domain: domain,
     });
   return true;
 };
