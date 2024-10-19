@@ -1,8 +1,5 @@
-### Portals API
+# Portals API
 
-This repository is made by Quadropic. It serves as the Private API for `portals.quadropic.com`
-
-#
 
 Starting this Server (Without Docker)
 
@@ -47,19 +44,14 @@ Documentation Pending
 
 #
 
-Rights of Ownership
+### Front end
 
-`WARNING` This is a Private API used by Quadropic, regardless of the severity or complexity if any of the data is shared to External Sources without permission a serious legal action might taake place.
+If you want a sample Frontend or an UI inspiration you might look at this Frontend made by our team usning NextJS(Prefer Static Export)
+[Portals Next JS Front End - GitHub Repo](https://github.com/QuadropicPortals/auth.portals.quadropic.com)
 
-Using Shared Code
 
-`WARNING` Those External Sources who use this API without prmission, might face legal action too.
+LICENSE MIT
 
-Sharing under Public Repository
-Even if Shared as a Public Repo you may not leak the API keys of whatever be the version
-
-#
-
-From Founder's Office and Backend Devlopment Team
+From Backend Devlopment Team
 
 ## Quadropic 24th Avenue
